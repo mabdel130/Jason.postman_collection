@@ -1,0 +1,536 @@
+{
+	"info": {
+		"_postman_id": "dddb344a-786c-4fa9-a0b1-3577e2acf9fd",
+		"name": "Jason",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30343558"
+	},
+	"item": [
+		{
+			"name": "Get Postes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[2].id).to.eql(3);\r",
+							"\r",
+							"    pm.expect(jsonData[2].body).to.eql(\"et iusto sed quo iure\\nvoluptatem occaecati omnis eligendi aut ad\\nvoluptatem doloribus vel accusantium quis pariatur\\nmolestiae porro eius odio et labore et velit aut\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verifiy That Numbers of Posts is 100 by cheack the number of last Post\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[99].id).to.eql(100);\r",
+							"\r",
+							"    pm.expect(jsonData[99].body).to.eql(\"cupiditate quo est a modi nesciunt soluta\\nipsa voluptas error itaque dicta in\\nautem qui minus magnam et distinctio eum\\naccusamus ratione error aut\");\r",
+							"});\r",
+							"\r",
+							" var jsonData = pm.response.json();\r",
+							"\r",
+							"var idCount = 0; // تعريف المتغير idCount\r",
+							"\r",
+							"jsonData.forEach(function(item) {\r",
+							"    if (item.hasOwnProperty(\"id\")) { \r",
+							"        idCount++; // زيادة العدد إذا كانت الخاصية موجودة\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"var expecteCount=100;\r",
+							"pm.test(\"Verifiy 'id' count \",function(){\r",
+							"pm.expect(idCount).to.eql(expecteCount);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Total IDs:\", idCount); // طباعة إجمالي عدد الـ IDs\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/posts"
+			},
+			"response": []
+		},
+		{
+			"name": "GetComments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Specific_Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifiy id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(parseInt(pm.variables.get(\"id\")));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the current iteration number\r",
+							"var currentIteration = pm.info.iteration;\r",
+							"\r",
+							"// Set the \"id\" variable to match the current iteration number\r",
+							"pm.variables.set(\"Post_ID\", currentIteration + 1); // +1 إذا كان الـ ID يبدأ من 1 وليس من 0\r",
+							"\r",
+							"console.log(\"Current Post_ID is set to:\", pm.variables.get(\"Post_ID\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/posts/{{Post_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Comments_Path",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the current iteration number\r",
+							"var currentIteration = pm.info.iteration;\r",
+							"\r",
+							"// Set the \"id\" variable to match the current iteration number\r",
+							"pm.variables.set(\"Post_ID\", currentIteration + 1); // +1 إذا كان الـ ID يبدأ من 1 وليس من 0\r",
+							"\r",
+							"console.log(\"Current Post_ID is set to:\", pm.variables.get(\"Post_ID\"));\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifiy postId\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].postId).to.eql(parseInt(pm.variables.get(\"Post_ID\")));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"var CommentCount = 5; // تعريف المتغير CommentCount\r",
+							"\r",
+							"jsonData.forEach(function(item) {\r",
+							"    if (item.hasOwnProperty(\"Commoent\")) { \r",
+							"        CommentCount++; // زيادة العدد إذا كانت الخاصية موجودة\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"var expecteCount=5;\r",
+							"pm.test(\"Verifiy 'Comment' count \",function(){\r",
+							"pm.expect(CommentCount).to.eql(expecteCount);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Total Comments:\",  CommentCount); // طباعة إجمالي عدد الـ IDs"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/posts/{{Post_ID}}/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "Comments_Query",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the current iteration number\r",
+							"var currentIteration = pm.info.iteration;\r",
+							"\r",
+							"// Set the \"id\" variable to match the current iteration number\r",
+							"pm.variables.set(\"Post_ID\", currentIteration + 1); // +1 إذا كان الـ ID يبدأ من 1 وليس من 0\r",
+							"\r",
+							"console.log(\"Current Post_ID is set to:\", pm.variables.get(\"Post_ID\"));\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifiy postId\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].postId).to.eql(parseInt(pm.variables.get(\"Post_ID\")));\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"var CommentCount = 5; // تعريف المتغير CommentCount\r",
+							"\r",
+							"jsonData.forEach(function(item) {\r",
+							"    if (item.hasOwnProperty(\"Commoent\")) { \r",
+							"        CommentCount++; // زيادة العدد إذا كانت الخاصية موجودة\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"var expecteCount=5;\r",
+							"pm.test(\"Verifiy 'Comment' count \",function(){\r",
+							"pm.expect(CommentCount).to.eql(expecteCount);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Total Comments:\",  CommentCount); // طباعة إجمالي عدد الـ IDs"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Base_URL}}/comments?postId={{Post_ID}}",
+					"host": [
+						"{{Base_URL}}"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{Post_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifiy User data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].id).to.eql(1);\r",
+							"      pm.expect(jsonData[0].username).to.eql(\"Bret\");\r",
+							"      pm.expect(jsonData[0].company.name).to.eql(\"Romaguera-Crona\");\r",
+							"       pm.expect(jsonData[0].address.geo.lng).to.eql(\"81.1496\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Specific User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifiy User data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(1);\r",
+							"      pm.expect(jsonData.username).to.eql(\"Bret\");\r",
+							"      pm.expect(jsonData.address.geo.lng).to.eql(\"81.1496\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/users/{{User_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Specific User Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check that User not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"    if(pm.response.code==404){\r",
+							"        pm.collectionVariables.set(\"Skip_Verification_Requist\",pm.info.requestName);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/users/90"
+			},
+			"response": []
+		},
+		{
+			"name": "Albums",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/albums"
+			},
+			"response": []
+		},
+		{
+			"name": "Specific Albums",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/users/{{User_ID}}/albums"
+			},
+			"response": []
+		},
+		{
+			"name": "to dos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the current iteration number\r",
+							"var currentIteration = pm.info.iteration;\r",
+							"\r",
+							"// Set the \"id\" variable to match the current iteration number\r",
+							"pm.variables.set(\"User_ID\", currentIteration + 1); // +1 إذا كان الـ ID يبدأ من 1 وليس من 0\r",
+							"\r",
+							"console.log(\"Current User_ID is set to:\", pm.variables.get(\"User_ID\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{Base_URL}}/todos/{{User_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"foo\",\r\n    \"body\": \"bar\",\r\n    \"userId\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{Base_URL}}/posts"
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Post_PUT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"foo\",\r\n    \"body\": \"bar\",\r\n    \"userId\": 1\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{Base_URL}}/posts/{{Post_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Post_Patch",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{Base_URL}}/posts/{{Post_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE POST",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{Base_URL}}/posts/{{Post_ID}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"//Check Variable (Skip_Verification_Requist) is set to true \r",
+					" if(pm.info.requestName!=pm.collectionVariables.get(\"Skip_Verification_Requist\")){\r",
+					"//Perform the test\r",
+					"pm.test(\"Status code is OK\", function () {\r",
+					"    pm.expect(pm.response.code).to.be.oneOf([201, 202,200]);\r",
+					"});\r",
+					" }\r",
+					" else{\r",
+					"   //Skip the test\r",
+					"   pm.test.skip(\"Test Skip ,Due to 404\")\r",
+					" }\r",
+					"pm.test(\"Response time is less than 500ms\", function () {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Base_URL",
+			"value": "https://jsonplaceholder.typicode.com",
+			"type": "string"
+		},
+		{
+			"key": "Post_ID",
+			"value": "90"
+		},
+		{
+			"key": "User_ID",
+			"value": "1"
+		},
+		{
+			"key": "Skip_Verification_Requist",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
